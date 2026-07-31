@@ -12,8 +12,8 @@ dependencies:
   # Majors fixados de proposito: o codigo depende destas APIs.
   # Riverpod 3 trocou ProviderContainer() por .test() e depreciou maybeWhen;
   # pw.TableHelper (usado no PDF) vive na linha pdf 3.x.
-  drift: ^2.20.0
-  drift_flutter: ^0.2.0
+  drift: ">=2.31.0 <2.32.0"
+  drift_flutter: ^0.2.8
   flutter_riverpod: ^2.6.1
   pdf: ^3.11.0
   printing: ^5.14.0
@@ -25,10 +25,20 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  drift_dev: ^2.20.0
-  build_runner: ^2.4.6
+  # A pilha de codegen fica no mais novo: build_runner antigo chama o `dart`
+  # com flags de snapshot que o Dart 3.10 nao tem mais.
+  drift_dev: ">=2.31.0 <2.32.0"
+  build_runner: ">=2.7.0"
   # Usado so nos testes, para abrir o sqlite do sistema na VM (test/helpers/db.dart).
-  sqlite3: ^2.4.6
+  sqlite3: ^2.9.0
+
+# path_provider_foundation >=2.5 depende de objective_c, que traz um build hook
+# (native assets). O build_runner deste SDK compila o script de build em AOT e
+# falha com "'dart compile' does not support build hooks". Como o pacote e a
+# implementacao iOS/macOS do path_provider e o alvo aqui e Android, fixar abaixo
+# dessa adocao e o custo mais baixo para o codegen do drift funcionar.
+dependency_overrides:
+  path_provider_foundation: ">=2.4.0 <2.5.0"
 
 flutter:
   uses-material-design: true
