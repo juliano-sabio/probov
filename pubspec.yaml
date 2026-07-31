@@ -1,0 +1,34 @@
+name: probov
+description: "Pesagem e precificacao de lotes de bovinos, offline."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Majors fixados de proposito: o codigo depende destas APIs.
+  # Riverpod 3 trocou ProviderContainer() por .test() e depreciou maybeWhen;
+  # pw.TableHelper (usado no PDF) vive na linha pdf 3.x.
+  drift: ^2.20.0
+  drift_flutter: ^0.2.0
+  flutter_riverpod: ^2.6.1
+  pdf: ^3.11.0
+  printing: ^5.14.0
+  intl: ^0.20.2
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  drift_dev: ^2.20.0
+  build_runner: ^2.4.6
+  # Usado so nos testes, para abrir o sqlite do sistema na VM (test/helpers/db.dart).
+  sqlite3: ^2.4.6
+
+flutter:
+  uses-material-design: true
