@@ -45,6 +45,7 @@ Lote        id, nome, data, contraparte?, obs?
             criterioBase: ARROBA | KG | CABECA
             precoBaseCentavos: int
             rendimentoBp: int              -- basis points, 5200 = 52,00%
+            racaPadrao?                    -- pré-preenche a raça na pesagem
             criadoEm, atualizadoEm
 
 RegraPreco  id, loteId, ordem
@@ -79,6 +80,11 @@ int precificar(Animal a, Lote l, List<RegraPreco> regras) → centavos
    - `pesoMinG` casa se `a.pesoG >= pesoMinG`
    - `pesoMaxG` casa se `a.pesoG <= pesoMaxG`
    - `raca` casa se igual à raça do animal (comparação exata, sem normalização)
+
+   `Lote.racaPadrao` apenas pré-preenche o campo na tela de pesagem; o valor é copiado
+   para a linha do animal ao salvar. A precificação nunca faz fallback do animal para o
+   lote — se a raça do animal é nula, uma regra com raça simplesmente não casa. Isso
+   mantém a função pura sem conhecimento de defaults de UI.
    Se nenhuma regra casa, usa `precoBaseCentavos` e `rendimentoBp` do lote.
    Se a regra casa mas tem `rendimentoBp` nulo, herda o do lote.
 2. **`ARROBA`:** `peso × rendimento ÷ 15 × preço`
@@ -129,8 +135,10 @@ Riverpod para estado derivado, Drift para persistência tipada com migrações
 versionadas. O schema vai mudar (a tabela de regras é a primeira candidata), e migração
 versionada é a diferença entre evoluir o app e pedir para o usuário reinstalar.
 
-Navegação com `Navigator` e rotas nomeadas. Cinco telas de hierarquia rasa não pagam
-uma dependência de roteamento.
+Navegação com `Navigator` e `MaterialPageRoute` de construtores tipados — não rotas
+nomeadas, porque quase toda tela recebe um `loteId` e um construtor tipado é conferido
+pelo compilador, enquanto `arguments` de rota nomeada só falha em runtime. Cinco telas
+de hierarquia rasa não pagam uma dependência de roteamento.
 
 ## Telas
 
@@ -149,10 +157,15 @@ uma dependência de roteamento.
 ## Relatório e PDF
 
 Pacotes `pdf` (montagem declarativa) e `printing` (compartilhar/imprimir), ambos
-offline. `MultiPage` para a tabela paginar sozinha em lotes grandes. Fonte Roboto
-embutida como asset — as fontes padrão do PDF tropeçam em acentuação portuguesa.
+offline. `MultiPage` para a tabela paginar sozinha em lotes grandes.
 `Printing.sharePdf` abre o share sheet nativo, cobrindo WhatsApp, e-mail e "salvar em
 arquivo" com uma chamada.
+
+Fonte: a Helvetica embutida do PDF, sem asset. Ela usa WinAnsiEncoding, que contém
+todos os acentos do português — o problema clássico de acentuação no PDF aparece fora do
+Latin-1. A restrição que isso impõe é concreta e vale registrar: nada de setas, `→`,
+travessão longo ou símbolos tipográficos no layout. Se um dia entrar um glifo fora do
+Latin-1, aí sim entra uma TTF como asset.
 
 O layout consome um `ReportData` puro. Os números são testados sem gerar PDF nenhum; o
 layout apenas desenha. Não haverá golden test de PDF — é frágil e de baixo valor aqui.
@@ -169,7 +182,9 @@ e valor; rodapé com os totais do resumo e numeração de páginas.
 - Regra com `pesoMinG > pesoMaxG` é bloqueada no editor.
 - Preço zero é aceito (manejo sem precificação é um uso legítimo do app).
 - Lote sem animais gera relatório vazio, com totais zerados, sem erro.
-- Toda exclusão tem undo via SnackBar.
+- Excluir animal tem undo via SnackBar. Excluir lote tem diálogo de confirmação, não
+  undo: a exclusão leva animais e regras em cascata, e oferecer "desfazer" para algo que
+  já foi apagado em cascata é uma promessa que a UI não pode cumprir.
 
 ## Testes
 
