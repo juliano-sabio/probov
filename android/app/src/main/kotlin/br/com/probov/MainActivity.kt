@@ -1,4 +1,4 @@
-package dev.sabio.probov
+package br.com.probov
 
 import io.flutter.embedding.android.FlutterActivity
 

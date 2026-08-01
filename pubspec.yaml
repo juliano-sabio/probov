@@ -31,6 +31,7 @@ dev_dependencies:
   build_runner: ">=2.7.0"
   # Usado so nos testes, para abrir o sqlite do sistema na VM (test/helpers/db.dart).
   sqlite3: ^2.9.0
+  flutter_launcher_icons: ^0.14.4
 
 # path_provider_foundation >=2.5 depende de objective_c, que traz um build hook
 # (native assets). O build_runner deste SDK compila o script de build em AOT e
@@ -42,3 +43,14 @@ dependency_overrides:
 
 flutter:
   uses-material-design: true
+
+# Roda com `dart run flutter_launcher_icons` depois de mudar assets/icon/.
+# O foreground adaptativo e um arquivo separado, com o @ menor: a mascara
+# circular do Android corta as bordas do icone cheio.
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#2E7D32"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
