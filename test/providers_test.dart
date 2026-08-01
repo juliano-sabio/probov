@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:probov/data/database.dart';
 import 'package:probov/data/repositories.dart';
 import 'package:probov/domain/pricing.dart';
 import 'package:probov/domain/report_data.dart';
@@ -43,7 +42,7 @@ void main() {
     int loteId,
     bool Function(ReportData) condicao,
   ) async {
-    final sub = c.listen(relatorioProvider(loteId), (_, __) {});
+    final sub = c.listen(relatorioProvider(loteId), (_, _) {});
     for (var i = 0; i < 200; i++) {
       final v = sub.read();
       if (v is AsyncData<ReportData> && condicao(v.value)) return v.value;

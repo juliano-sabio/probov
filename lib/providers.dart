@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'data/database.dart';
+// repositories.dart reexporta database.dart, de onde vem LoteRow e companhia.
 import 'data/repositories.dart';
 import 'domain/report_data.dart';
 
