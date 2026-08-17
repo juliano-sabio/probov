@@ -15,7 +15,7 @@ import '../../domain/report_data.dart';
 /// nada de setas, travessão longo ou símbolos tipográficos neste layout, só
 /// Latin-1. Por isso os separadores abaixo são hifens.
 Future<Uint8List> gerarPdfRelatorio(ReportData r) async {
-  final doc = pw.Document(title: 'Relatorio ${r.loteNome}');
+  final doc = pw.Document(title: 'Relatório ${r.loteNome}');
   final mostrarArrobas = r.cfg.criterio == CriterioBase.arroba;
 
   final cabecalhoTabela = <String>[
@@ -23,7 +23,7 @@ Future<Uint8List> gerarPdfRelatorio(ReportData r) async {
     'Brinco',
     'Peso',
     if (mostrarArrobas) 'Arrobas',
-    'Preco',
+    'Preço',
     'Valor',
   ];
 
@@ -87,7 +87,7 @@ Future<Uint8List> gerarPdfRelatorio(ReportData r) async {
 pw.Widget _cabecalho(ReportData r) => pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text('Probov - Relatorio de pesagem',
+        pw.Text('Probov - Relatório de pesagem',
             style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700)),
         pw.SizedBox(height: 4),
         pw.Text(r.loteNome,
@@ -100,20 +100,20 @@ pw.Widget _cabecalho(ReportData r) => pw.Column(
 pw.Widget _criterio(ReportData r) {
   final base = switch (r.cfg.criterio) {
     CriterioBase.arroba =>
-      '${formatBrl(r.cfg.precoBaseCentavos)} por arroba, rendimento de carcaca ${formatPercentBp(r.cfg.rendimentoBp)}',
+      '${formatBrl(r.cfg.precoBaseCentavos)} por arroba, rendimento de carcaça ${formatPercentBp(r.cfg.rendimentoBp)}',
     CriterioBase.kg => '${formatBrl(r.cfg.precoBaseCentavos)} por quilograma',
-    CriterioBase.cabeca => '${formatBrl(r.cfg.precoBaseCentavos)} por cabeca',
+    CriterioBase.cabeca => '${formatBrl(r.cfg.precoBaseCentavos)} por cabeça',
   };
   return pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
-      pw.Text('Criterio de precificacao',
+      pw.Text('Critério de precificação',
           style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       pw.Text(base),
       if (r.cfg.regras.isNotEmpty)
         pw.Text(
-          '${r.cfg.regras.length} regra(s) de excecao por faixa de peso ou raca. '
-          'A coluna Preco mostra o valor aplicado a cada animal.',
+          '${r.cfg.regras.length} regra(s) de exceção por faixa de peso ou raça. '
+          'A coluna Preço mostra o valor aplicado a cada animal.',
           style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
         ),
     ],
@@ -143,12 +143,12 @@ pw.Widget _resumo(ReportData r) {
         pw.BoxDecoration(border: pw.Border.all(color: PdfColors.grey600)),
     child: pw.Column(
       children: [
-        linha('Cabecas', '${r.cabecas}'),
+        linha('Cabeças', '${r.cabecas}'),
         linha('Peso total', formatKg(r.pesoTotalG)),
-        linha('Peso medio', formatKg(r.pesoMedioG)),
+        linha('Peso médio', formatKg(r.pesoMedioG)),
         if (r.cfg.criterio == CriterioBase.arroba)
           linha('Arrobas totais', formatArrobas(r.arrobasTotalCentesimos)),
-        linha('Valor medio por cabeca', formatBrl(r.valorMedioCentavos)),
+        linha('Valor médio por cabeça', formatBrl(r.valorMedioCentavos)),
         pw.Divider(),
         linha('VALOR TOTAL DO LOTE', formatBrl(r.valorTotalCentavos),
             destaque: true),

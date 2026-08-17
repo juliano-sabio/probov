@@ -88,7 +88,7 @@ class AnimaisScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             TextField(
               controller: raca,
-              decoration: const InputDecoration(labelText: 'Raca'),
+              decoration: const InputDecoration(labelText: 'Raça'),
             ),
           ],
         ),
@@ -110,7 +110,7 @@ class AnimaisScreen extends ConsumerWidget {
       if (novoPeso == null || novoPeso <= 0) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Peso invalido. Nada foi alterado.')),
+            const SnackBar(content: Text('Peso inválido. Nada foi alterado.')),
           );
         }
       } else {

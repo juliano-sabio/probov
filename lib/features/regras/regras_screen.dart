@@ -40,7 +40,7 @@ class _RegrasScreenState extends ConsumerState<RegrasScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Regras de preco'),
+        title: const Text('Regras de preço'),
         actions: [
           TextButton(
             onPressed: () async {
@@ -62,8 +62,8 @@ class _RegrasScreenState extends ConsumerState<RegrasScreen> {
           const Padding(
             padding: EdgeInsets.all(16),
             child: Text(
-              'A primeira regra que casar com o animal define o preco. '
-              'Arraste para reordenar. Sem nenhuma regra, vale o preco base do lote.',
+              'A primeira regra que casar com o animal define o preço. '
+              'Arraste para reordenar. Sem nenhuma regra, vale o preço base do lote.',
             ),
           ),
           Expanded(
@@ -106,7 +106,7 @@ class _RegrasScreenState extends ConsumerState<RegrasScreen> {
     } else if (r.pesoMaxG != null) {
       partes.add('ate ${formatKg(r.pesoMaxG!)}');
     }
-    if (r.raca != null) partes.add('raca ${r.raca}');
+    if (r.raca != null) partes.add('raça ${r.raca}');
     return partes.isEmpty ? 'Qualquer animal' : partes.join('  -  ');
   }
 
@@ -182,7 +182,7 @@ class _RegraDialogState extends State<_RegraDialog> {
     final soNumero = [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))];
 
     return AlertDialog(
-      title: const Text('Regra de preco'),
+      title: const Text('Regra de preço'),
       content: SingleChildScrollView(
         child: Form(
           key: _form,
@@ -215,18 +215,18 @@ class _RegraDialogState extends State<_RegraDialog> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _raca,
-                decoration: const InputDecoration(labelText: 'Raca'),
+                decoration: const InputDecoration(labelText: 'Raça'),
                 textCapitalization: TextCapitalization.words,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _preco,
                 decoration: const InputDecoration(
-                    labelText: 'Preco', prefixText: 'R\$ '),
+                    labelText: 'Preço', prefixText: 'R\$ '),
                 keyboardType: numerico,
                 inputFormatters: soNumero,
                 validator: (v) =>
-                    parseCentavos(v ?? '') == null ? 'Preco invalido' : null,
+                    parseCentavos(v ?? '') == null ? 'Preço inválido' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -264,7 +264,7 @@ class _RegraDialogState extends State<_RegraDialog> {
     if (min != null && max != null && min > max) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('O peso minimo nao pode ser maior que o maximo.')),
+            content: Text('O peso mínimo não pode ser maior que o máximo.')),
       );
       return;
     }

@@ -17,7 +17,7 @@ class RelatorioScreen extends ConsumerWidget {
     final pronto = relatorio.valueOrNull;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Relatorio')),
+      appBar: AppBar(title: const Text('Relatório')),
       floatingActionButton: pronto == null
           ? null
           : FloatingActionButton.extended(
@@ -59,18 +59,18 @@ class _Criterio extends StatelessWidget {
       CriterioBase.arroba =>
         '${formatBrl(cfg.precoBaseCentavos)} por @  -  rendimento ${formatPercentBp(cfg.rendimentoBp)}',
       CriterioBase.kg => '${formatBrl(cfg.precoBaseCentavos)} por kg',
-      CriterioBase.cabeca => '${formatBrl(cfg.precoBaseCentavos)} por cabeca',
+      CriterioBase.cabeca => '${formatBrl(cfg.precoBaseCentavos)} por cabeça',
     };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Criterio', style: Theme.of(context).textTheme.titleMedium),
+        Text('Critério', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 4),
         Text(base),
         if (cfg.regras.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 4),
-            child: Text('${cfg.regras.length} regra(s) de excecao aplicadas'),
+            child: Text('${cfg.regras.length} regra(s) de exceção aplicadas'),
           ),
       ],
     );
@@ -84,12 +84,12 @@ class _Resumo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final itens = <(String, String)>[
-      ('Cabecas', '${r.cabecas}'),
+      ('Cabeças', '${r.cabecas}'),
       ('Peso total', formatKg(r.pesoTotalG)),
-      ('Peso medio', formatKg(r.pesoMedioG)),
+      ('Peso médio', formatKg(r.pesoMedioG)),
       if (r.cfg.criterio == CriterioBase.arroba)
         ('Arrobas totais', formatArrobas(r.arrobasTotalCentesimos)),
-      ('Valor medio por cabeca', formatBrl(r.valorMedioCentavos)),
+      ('Valor médio por cabeça', formatBrl(r.valorMedioCentavos)),
     ];
 
     return Column(

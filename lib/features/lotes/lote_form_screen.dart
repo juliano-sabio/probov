@@ -95,13 +95,13 @@ class _LoteFormScreenState extends ConsumerState<LoteFormScreen> {
               textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 24),
-            const Text('Criterio de precificacao'),
+            const Text('Critério de precificação'),
             const SizedBox(height: 8),
             SegmentedButton<CriterioBase>(
               segments: const [
                 ButtonSegment(value: CriterioBase.arroba, label: Text('Arroba')),
                 ButtonSegment(value: CriterioBase.kg, label: Text('Quilo')),
-                ButtonSegment(value: CriterioBase.cabeca, label: Text('Cabeca')),
+                ButtonSegment(value: CriterioBase.cabeca, label: Text('Cabeça')),
               ],
               selected: {_criterio},
               onSelectionChanged: (s) => setState(() => _criterio = s.first),
@@ -110,7 +110,7 @@ class _LoteFormScreenState extends ConsumerState<LoteFormScreen> {
             TextFormField(
               controller: _preco,
               decoration: InputDecoration(
-                labelText: 'Preco base',
+                labelText: 'Preço base',
                 prefixText: 'R\$ ',
                 suffixText: _sufixoPreco,
               ),
@@ -119,14 +119,14 @@ class _LoteFormScreenState extends ConsumerState<LoteFormScreen> {
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
               ],
               validator: (v) =>
-                  parseCentavos(v ?? '') == null ? 'Preco invalido' : null,
+                  parseCentavos(v ?? '') == null ? 'Preço inválido' : null,
             ),
             if (_criterio == CriterioBase.arroba) ...[
               const SizedBox(height: 12),
               TextFormField(
                 controller: _rendimento,
                 decoration: const InputDecoration(
-                  labelText: 'Rendimento de carcaca',
+                  labelText: 'Rendimento de carcaça',
                   suffixText: '%',
                   helperText: '100% equivale a arroba sobre peso vivo',
                 ),
@@ -148,8 +148,8 @@ class _LoteFormScreenState extends ConsumerState<LoteFormScreen> {
             TextFormField(
               controller: _racaPadrao,
               decoration: const InputDecoration(
-                labelText: 'Raca padrao (opcional)',
-                helperText: 'Pre-preenche a raca de cada animal na pesagem',
+                labelText: 'Raça padrão (opcional)',
+                helperText: 'Pré-preenche a raça de cada animal na pesagem',
               ),
               textCapitalization: TextCapitalization.words,
             ),
@@ -163,13 +163,13 @@ class _LoteFormScreenState extends ConsumerState<LoteFormScreen> {
                   ),
                 ),
                 icon: const Icon(Icons.rule),
-                label: const Text('Regras por faixa de peso e raca'),
+                label: const Text('Regras por faixa de peso e raça'),
               ),
             ],
             const SizedBox(height: 32),
             FilledButton(
               onPressed: _salvar,
-              child: Text(_editando ? 'Salvar' : 'Criar e comecar a pesar'),
+              child: Text(_editando ? 'Salvar' : 'Criar e começar a pesar'),
             ),
           ],
         ),
@@ -180,7 +180,7 @@ class _LoteFormScreenState extends ConsumerState<LoteFormScreen> {
   String get _sufixoPreco => switch (_criterio) {
         CriterioBase.arroba => 'por @',
         CriterioBase.kg => 'por kg',
-        CriterioBase.cabeca => 'por cabeca',
+        CriterioBase.cabeca => 'por cabeça',
       };
 
   Future<void> _escolherData() async {

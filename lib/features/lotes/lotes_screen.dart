@@ -28,12 +28,35 @@ class LotesScreen extends ConsumerWidget {
         error: (e, _) => Center(child: Text('Erro ao carregar: $e')),
         data: (lista) {
           if (lista.isEmpty) {
-            return const Center(
+            final cor = Theme.of(context).colorScheme;
+            final texto = Theme.of(context).textTheme;
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(32),
-                child: Text(
-                  'Nenhum lote ainda.\nToque em "Novo lote" para comecar a pesar.',
-                  textAlign: TextAlign.center,
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.scale_outlined,
+                      size: 56,
+                      color: cor.primary.withValues(alpha: 0.35),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Nenhum lote ainda',
+                      style: texto.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Crie um lote para começar a pesar.',
+                      textAlign: TextAlign.center,
+                      style: texto.bodyMedium?.copyWith(
+                        color: cor.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -66,18 +89,42 @@ class _LoteTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final r = ref.watch(relatorioProvider(loteId)).valueOrNull;
-    final resumo = r == null
-        ? 'calculando...'
-        : '${r.cabecas} cab.  -  ${formatBrl(r.valorTotalCentavos)}';
+    final cor = Theme.of(context).colorScheme;
+    final texto = Theme.of(context).textTheme;
 
     return ListTile(
-      title: Text(nome),
-      subtitle: Text('${formatData(data)}\n$resumo'),
-      isThreeLine: true,
-      trailing: IconButton(
-        icon: const Icon(Icons.delete_outline),
-        tooltip: 'Excluir lote',
-        onPressed: () => _confirmarExclusao(context, ref),
+      title: Text(
+        nome,
+        style: texto.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 2),
+        child: Text(
+          r == null
+              ? formatData(data)
+              : '${formatData(data)}  ·  ${r.cabecas} '
+                    '${r.cabecas == 1 ? 'cabeça' : 'cabeças'}',
+          style: texto.bodySmall?.copyWith(color: cor.onSurfaceVariant),
+        ),
+      ),
+      // O valor do lote é o dado que a pessoa procura ao abrir a lista, então
+      // ele fica na direita, com peso, e não misturado na terceira linha.
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            r == null ? '...' : formatBrl(r.valorTotalCentavos),
+            style: texto.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: cor.primary,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline),
+            tooltip: 'Excluir lote',
+            onPressed: () => _confirmarExclusao(context, ref),
+          ),
+        ],
       ),
       onTap: () => Navigator.push(
         context,
@@ -95,8 +142,8 @@ class _LoteTile extends ConsumerWidget {
       builder: (ctx) => AlertDialog(
         title: Text('Excluir "$nome"?'),
         content: const Text(
-          'Todos os animais e regras de preco deste lote serao apagados. '
-          'Nao da para desfazer.',
+          'Todos os animais e regras de preço deste lote serão apagados. '
+          'Não dá para desfazer.',
         ),
         actions: [
           TextButton(

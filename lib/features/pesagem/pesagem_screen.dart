@@ -64,7 +64,7 @@ class _PesagemScreenState extends ConsumerState<PesagemScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.tune),
-            tooltip: 'Editar lote e precos',
+            tooltip: 'Editar lote e preços',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -84,7 +84,7 @@ class _PesagemScreenState extends ConsumerState<PesagemScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.description_outlined),
-            tooltip: 'Relatorio',
+            tooltip: 'Relatório',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -119,12 +119,32 @@ class _PesagemScreenState extends ConsumerState<PesagemScreen> {
                       children: [
                         Text(
                           _digitos.isEmpty ? '0' : _digitos,
-                          style: const TextStyle(
-                            fontSize: 56,
-                            fontWeight: FontWeight.bold,
+                          style: TextStyle(
+                            fontSize: 68,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -2,
+                            height: 1,
+                            // Sem largura fixa de dígito o número inteiro salta
+                            // para os lados a cada tecla digitada.
+                            fontFeatures: const [FontFeature.tabularFigures()],
+                            color: _digitos.isEmpty
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withValues(alpha: 0.25)
+                                : Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
-                        const Text('kg'),
+                        const SizedBox(height: 2),
+                        Text(
+                          'kg',
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                letterSpacing: 1.5,
+                              ),
+                        ),
                         const SizedBox(height: 8),
                         Text(
                           previa == null
@@ -267,7 +287,7 @@ class _Cabecalho extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Cabecas'),
+            const Text('Cabeças'),
             Text('$cabecas', style: Theme.of(context).textTheme.headlineSmall),
           ],
         ),
