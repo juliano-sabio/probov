@@ -43,6 +43,19 @@ dependency_overrides:
 
 flutter:
   uses-material-design: true
+  # Inter embutida, nao baixada em runtime: o app roda no curral, muitas vezes
+  # sem sinal, e a tela tem que sair certa no primeiro frame.
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
 
 # Roda com `dart run flutter_launcher_icons` depois de mudar assets/icon/.
 # O foreground adaptativo e um arquivo separado, com o @ menor: a mascara

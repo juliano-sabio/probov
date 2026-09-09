@@ -45,11 +45,27 @@ ThemeData _tema() {
         outlineVariant: const Color(0xFFD5D7D0),
       );
 
-  final base = ThemeData(colorScheme: esquema, useMaterial3: true);
+  // Inter no lugar da fonte do sistema: altura-x maior, então o número lido de
+  // relance a um metro da balança fica mais legível que na Roboto.
+  final base = ThemeData(
+    colorScheme: esquema,
+    useMaterial3: true,
+    fontFamily: 'Inter',
+  );
 
   return base.copyWith(
     scaffoldBackgroundColor: esquema.surface,
     textTheme: _alinharNumeros(base.textTheme),
+
+    cardTheme: CardThemeData(
+      elevation: 0,
+      color: Colors.white,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: esquema.outlineVariant),
+      ),
+    ),
 
     appBarTheme: AppBarTheme(
       backgroundColor: esquema.surface,
@@ -115,14 +131,20 @@ ThemeData _tema() {
 
 TextTheme _alinharNumeros(TextTheme t) {
   TextStyle? n(TextStyle? s) => s?.copyWith(fontFeatures: _numerosAlinhados);
+
+  /// Título: números alinhados mais tracking apertado. A Inter é larga, e sem
+  /// isto o título fica com ar solto que a Roboto não tinha.
+  TextStyle? g(TextStyle? s, double tracking) =>
+      n(s)?.copyWith(letterSpacing: tracking, fontWeight: FontWeight.w700);
+
   return t.copyWith(
-    displayLarge: n(t.displayLarge),
-    displayMedium: n(t.displayMedium),
-    displaySmall: n(t.displaySmall),
-    headlineLarge: n(t.headlineLarge),
-    headlineMedium: n(t.headlineMedium),
-    headlineSmall: n(t.headlineSmall),
-    titleLarge: n(t.titleLarge),
+    displayLarge: g(t.displayLarge, -1.6),
+    displayMedium: g(t.displayMedium, -1.2),
+    displaySmall: g(t.displaySmall, -1.0),
+    headlineLarge: g(t.headlineLarge, -0.8),
+    headlineMedium: g(t.headlineMedium, -0.6),
+    headlineSmall: g(t.headlineSmall, -0.4),
+    titleLarge: g(t.titleLarge, -0.3),
     titleMedium: n(t.titleMedium),
     titleSmall: n(t.titleSmall),
     bodyLarge: n(t.bodyLarge),
